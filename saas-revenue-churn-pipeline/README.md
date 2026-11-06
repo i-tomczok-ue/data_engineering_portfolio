@@ -144,6 +144,14 @@ Prerequisites: Python 3.13, a free Databricks Free Edition workspace with a Volu
 
 Only serverless compute is available, there is one active pipeline per type, and outbound internet access is limited to trusted domains (Confluent Cloud was reachable in testing). The pipeline therefore runs as an incremental batch, triggered after each daily drop (`AvailableNow`-style), not as a continuously running stream.
 
+## Development approach
+
+This project was built with AI assistance (Claude, by Anthropic) as a pair-programming and learning partner.
+
+**My role:** defining the business problem and the hypothesis to test, choosing the stack and the architecture (channel split between files and Kafka, SCD 1 on customers and SCD 2 on subscriptions, invoice lifecycle, contractual MRR with discount as a separate measure), setting up the Confluent Cloud and Databricks environments, running every stage in Databricks, and verifying the results against expected values (row counts per layer, quarantine breakdown, MRR reconciliation with an independent ground truth).
+
+**AI's role:** drafting code (data generator, pipeline definitions, SQL), proposing design options with trade-offs, and helping debug errors. Every step was run and checked by me; defects found during testing, such as a mismatch in invoice totals caused by a subscription that started and ended within one month, were investigated and fixed.
+
 ## Limitations
 
 * All data is synthetic and generated with fixed random seeds. Names and figures do not describe any real company.
